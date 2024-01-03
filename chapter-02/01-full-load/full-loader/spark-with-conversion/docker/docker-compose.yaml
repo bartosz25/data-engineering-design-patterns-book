@@ -1,0 +1,13 @@
+version: '3'
+services:
+  data_generator:
+    image: 'waitingforcode/data-generator-blogging-platform:0.1-beta'
+    container_name: data_generator_full_loader
+    volumes:
+      - "/tmp/dedp/ch02/full-loader/:/home/data_generator_user/data_generator_output"
+      - "./generation_configuration.yaml:/home/data_generator_user/generation_configuration.yaml"
+    entrypoint:
+      - python3
+      - /home/data_generator_user/data_generator/generate_dataset.py
+      - --config_file
+      - /home/data_generator_user/generation_configuration.yaml

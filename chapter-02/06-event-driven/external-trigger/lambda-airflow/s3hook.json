@@ -1,0 +1,11 @@
+{
+    "LambdaFunctionConfigurations": [
+        {
+            "Id": "1234567890123",
+            "LambdaFunctionArn": "arn:aws:lambda:us-east-1:000000000000:function:devices-loader-trigger",
+            "Events": [
+                "s3:ObjectCreated:*"
+            ]
+        }
+    ]
+}

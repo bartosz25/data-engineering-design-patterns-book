@@ -1,0 +1,15 @@
+{
+    "name": "visits-connector",
+    "config": {
+        "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+        "tasks.max": "1",
+        "database.hostname": "postgres",
+        "database.port": "5432",
+        "database.user": "postgres",
+        "database.password": "postgres",
+        "database.dbname" : "dedp",
+        "database.server.name": "dbserver1",
+        "schema.include.list": "dedp_schema",
+        "topic.prefix": "dedp"
+    }
+}

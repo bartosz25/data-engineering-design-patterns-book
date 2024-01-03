@@ -1,0 +1,14 @@
+version: '3.1'
+services:
+  postgresql:
+    image: postgres:11
+    container_name: dedp_test_full_loader_postgresql
+    environment:
+      - POSTGRES_USER=dedp_test
+      - POSTGRES_PASSWORD=dedp_test
+      - POSTGRES_DB=dedp_test
+    ports:
+        - 5432:5432
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - /tmp/dedp/ch02/full-loader/data-exposition/input:/data_to_load
