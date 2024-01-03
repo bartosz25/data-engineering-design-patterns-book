@@ -48,11 +48,17 @@ records. You should also notice the compaction operation in the broker logs:
 > compaction_kafka  | [2023-12-24 12:44:04,685] INFO Cleaner 0: Building offset map for devices-0... (kafka.log.LogCleaner)
 > compaction_kafka  | [2023-12-24 12:44:04,714] INFO Cleaner 0: Building offset map for log devices-0 for 2 segments in offset range [2, 6). (kafka.log.LogCleaner)
 > compaction_kafka  | [2023-12-24 12:44:04,714] INFO Cleaner 0: Offset map for log devices-0 complete. (kafka.log.LogCleaner)
+
 > compaction_kafka  | [2023-12-24 12:44:04,714] INFO Cleaner 0: Cleaning log devices-0 (cleaning prior to Sun Dec 24 12:44:00 UTC 2023, discarding tombstones prior to upper bound deletion horizon Sat Dec 23 12:42:29 UTC 2023)... (kafka.log.LogCleaner)
+
 > compaction_kafka  | [2023-12-24 12:44:04,715] INFO Cleaner 0: Cleaning LogSegment(baseOffset=0, size=156, lastModifiedTime=1703421749619, largestRecordTimestamp=Some(1703421748616)) in log devices-0 into 0 with an upper bound deletion horizon 1703335349619 computed from the segment last modified time of 1703421749619,retaining deletes. (kafka.log.LogCleaner)
+
 > compaction_kafka  | [2023-12-24 12:44:04,716] INFO Cleaner 0: Cleaning LogSegment(baseOffset=2, size=78, lastModifiedTime=1703421778995, largestRecordTimestamp=Some(1703421777991)) in log devices-0 into 0 with an upper bound deletion horizon 1703335349619 computed from the segment last modified time of 1703421778995,retaining deletes. (kafka.log.LogCleaner)
+
 > compaction_kafka  | [2023-12-24 12:44:04,716] INFO Cleaner 0: Cleaning LogSegment(baseOffset=3, size=216, lastModifiedTime=1703421840571, largestRecordTimestamp=Some(1703421839575)) in log devices-0 into 0 with an upper bound deletion horizon 1703335349619 computed from the segment last modified time of 1703421840571,retaining deletes. (kafka.log.LogCleaner)
+
 > compaction_kafka  | [2023-12-24 12:44:04,720] INFO Cleaner 0: Swapping in cleaned segment LogSegment(baseOffset=0, size=372, lastModifiedTime=1703421840571, largestRecordTimestamp=Some(1703421839575)) for segment(s) List(LogSegment(baseOffset=0, size=156, lastModifiedTime=1703421749619, largestRecordTimestamp=Some(1703421748616)), LogSegment(baseOffset=2, size=78, lastModifiedTime=1703421778995, largestRecordTimestamp=Some(1703421777991)), LogSegment(baseOffset=3, size=216, lastModifiedTime=1703421840571, largestRecordTimestamp=Some(1703421839575))) in log Log(dir=/bitnami/kafka/data/devices-0, topicId=zVr7ny8cQA2k3U3OsVO9sQ, topic=devices, partition=0, highWatermark=7, lastStableOffset=7, logStartOffset=0, logEndOffset=7) (kafka.log.LogCleaner)
+
 > compaction_kafka  | [2023-12-24 12:44:04,727] INFO [kafka-log-cleaner-thread-0]: 
 > compaction_kafka  | 	Log cleaner thread 0 cleaned log devices-0 (dirty section = [2, 6])
 > compaction_kafka  | 	0.0 MB of log processed in 0.0 seconds (0.0 MB/sec).
