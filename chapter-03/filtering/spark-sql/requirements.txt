@@ -1,0 +1,4 @@
+delta-spark==3.0.0
+pyspark==3.5.0
+pandas==2.0.2
+pyarrow==14.0.1
