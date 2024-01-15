@@ -1,6 +1,6 @@
 # Fault-tolerance - Apache Flink
 
-1. Explain the [stateful_flink_consumer.py](in_memory_weaker_fault_tolerance%2Fstateful_flink_consumer.py)
+1. Explain the [stateful_flink_consumer.py](stateful_flink_consumer.py)
 * even though it looks like a simple stateful job, there are several points to keep in mind here:
   * `state.checkpoints.dir` attribute that defines where the state gets checkpointed for fault-tolerance
     * it's passed in the Docker Compose: `-Dstate.checkpoints.dir="file:///checkpoints_flink"`
