@@ -1,9 +1,9 @@
-# Incremental loader
+# Late data integrator
 ## Data preparation
-1. Generate the dataset for the demo:
+1. Generate datasets without the late data for the demo:
 ```
 cd dataset
-mkdir -p /tmp/dedp/ch02/incremental_loader/
+mkdir -p /tmp/dedp/ch03/late-data-integrator/dataset
 docker-compose down --volumes; docker-compose up
 ```
 

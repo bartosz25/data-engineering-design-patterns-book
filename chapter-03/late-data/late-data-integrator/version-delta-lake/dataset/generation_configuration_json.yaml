@@ -1,9 +1,10 @@
 dataset:
-  rows: 50
+  rows: 1000
   composition_percentage:
     duplicates: 0
     missing_fields: 0
     unprocessable_rows: 0
+  late_rows_percentage: 70
 data_blocker:
   type: 'no'
 entity:
