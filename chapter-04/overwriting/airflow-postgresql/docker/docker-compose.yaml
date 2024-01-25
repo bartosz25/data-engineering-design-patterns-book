@@ -1,0 +1,25 @@
+version: '3.1'
+services:
+  data_generator:
+    image: waitingforcode/data-generator-blogging-platform:0.2-beta
+    container_name: data_generator_ch04_metadata_cleaner
+    volumes:
+      - /tmp/dedp/ch04/overwriting/input/:/home/data_generator_user/data_generator_output
+      - ./generation_configuration_json.yaml:/home/data_generator_user/generation_configuration_json.yaml
+    entrypoint:
+      - python3
+      - /home/data_generator_user/data_generator/generate_dataset.py
+      - --config_file
+      - /home/data_generator_user/generation_configuration_json.yaml
+  postgresql:
+      image: postgres:15
+      container_name: dedp_postgresql
+      environment:
+        - POSTGRES_USER=dedp_test
+        - POSTGRES_PASSWORD=dedp_test
+        - POSTGRES_DB=dedp
+      ports:
+          - "5432:5432"
+      volumes:
+        - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+        - /tmp/dedp/ch04/overwriting/input:/data_to_load
