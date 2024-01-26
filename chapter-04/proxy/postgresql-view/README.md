@@ -7,7 +7,7 @@ mkdir -p /tmp/dedp/ch04/proxy/input
 ```
 ./start.sh
 ```
-3. Open the Apache Airflow UI and connect: http://localhost:8080 (bde/bde)
+3. Open the Apache Airflow UI and connect: http://localhost:8080 (dedp/dedp)
 4. Start the PostgreSQL database:
 ```
 cd docker
