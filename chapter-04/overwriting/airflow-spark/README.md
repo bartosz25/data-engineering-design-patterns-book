@@ -77,13 +77,38 @@ cd airflow
 4. Start the `visits_loader` DAG and wait for all the three scheduled executions to complete.
 5. Check the outcome:
 ```
-$ tree /tmp/dedp/ch04/overwriting/data_overwriting/output
+$ tree /tmp/dedp/ch04/overwriting/data_overwriting/output -DA
+/tmp/dedp/ch04/overwriting/data_overwriting/output
+├── [Jan 30 05:46]  date=2023-11-01
+│   ├── [Jan 30 05:46]  part-00000-261d4939-e697-4ea8-b8e1-3c6e484a56a8-c000.txt
+│   └── [Jan 30 05:46]  _SUCCESS
+├── [Jan 30 05:47]  date=2023-11-02
+│   ├── [Jan 30 05:47]  part-00000-796dfe90-23ab-4112-acf5-55151a02addc-c000.txt
+│   └── [Jan 30 05:47]  _SUCCESS
+└── [Jan 30 05:48]  date=2023-11-03
+    ├── [Jan 30 05:48]  part-00000-4c533850-4dd3-4ff3-8ace-2fef447e9b03-c000.txt
+    └── [Jan 30 05:48]  _SUCCESS
+
+3 directories, 6 files
 ```
 6. Clean the pipelines to restart them:
-**TODO: add screenshot**
+![assets/clear_tasks.png](assets/clear_tasks.png)
 7. Wait for the completion.
 8. Check the result; thanks to the overwriting mode, you shouldn't see any duplicates:
 ```
-$ tree /tmp/dedp/ch04/overwriting/data_overwriting/output
+$ tree /tmp/dedp/ch04/overwriting/data_overwriting/output -DA
+/tmp/dedp/ch04/overwriting/data_overwriting/output
+├── [Jan 30 05:51]  date=2023-11-01
+│   ├── [Jan 30 05:51]  part-00000-6f7f734c-8f4f-4d37-8ba9-f9817504aa02-c000.txt
+│   └── [Jan 30 05:51]  _SUCCESS
+├── [Jan 30 05:52]  date=2023-11-02
+│   ├── [Jan 30 05:52]  part-00000-4367a1b6-794a-41cc-bc9a-4bad884f8f36-c000.txt
+│   └── [Jan 30 05:52]  _SUCCESS
+└── [Jan 30 05:54]  date=2023-11-03
+    ├── [Jan 30 05:54]  part-00000-33d3b739-1480-4b1a-b6df-b28bf215e524-c000.txt
+    └── [Jan 30 05:54]  _SUCCESS
+
+3 directories, 6 files
 ```
+You should see the same number of files but with different creation times.
 9. Stop minikube: `minikube stop`

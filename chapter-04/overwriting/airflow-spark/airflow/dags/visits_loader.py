@@ -32,16 +32,17 @@ with DAG('visits_loader', max_active_runs=1,
         do_xcom_push=False
     )
 
+    visits_loader_job_k8s_namespace = 'dedp-ch04'
     load_job_trigger = SparkKubernetesOperator(
         task_id='load_job_trigger',
-        namespace=get_namespace(),
+        namespace=visits_loader_job_k8s_namespace,
         application_file='visits_loader.yaml',
         do_xcom_push=True
     )
 
     load_job_sensor = SparkKubernetesSensor(
         task_id='load_job_sensor',
-        namespace=get_namespace(),
+        namespace=visits_loader_job_k8s_namespace,
         mode='reschedule',
         application_name="{{ task_instance.xcom_pull(task_ids='load_job_trigger')['metadata']['name'] }}",
         attach_log=True

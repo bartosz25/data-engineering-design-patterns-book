@@ -3,7 +3,7 @@ apiVersion: "sparkoperator.k8s.io/v1beta2"
 kind: SparkApplication
 metadata:
   name: "incremental-load-{{ macros.uuid.uuid4() }}"
-  namespace: dedp-ch02
+  namespace: dedp-ch04
 spec:
   type: Python
   pythonVersion: "3"
