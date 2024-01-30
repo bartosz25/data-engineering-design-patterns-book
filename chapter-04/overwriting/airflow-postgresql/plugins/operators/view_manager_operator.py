@@ -19,5 +19,3 @@ class PostgresViewManagerOperator(PostgresOperator):
             view_query = 'CREATE OR REPLACE VIEW {schema}.{view_name} AS ({tables})'.format(
                 schema=self.schema, view_name=self.view_name, tables=view_tables_union)
             hook.run(view_query)
-        else:
-            hook.run('DROP VIEW IF EXISTS {}'.format(self.view_name))

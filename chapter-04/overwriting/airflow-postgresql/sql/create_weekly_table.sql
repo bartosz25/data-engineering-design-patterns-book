@@ -1,4 +1,4 @@
-{% set table_to_create = get_weekly_table_name(params.base_table_name, execution_date) %}
+{% set table_to_create = get_weekly_table_name(execution_date) %}
 
 DROP TABLE IF EXISTS {{ table_to_create }} CASCADE;
 CREATE TABLE {{ table_to_create }} (

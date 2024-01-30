@@ -11,7 +11,7 @@ from airflow.utils.trigger_rule import TriggerRule
 from operators.view_manager_operator import PostgresViewManagerOperator
 
 from config import get_data_location_base_dir, get_database_final_schema
-from macros import get_staging_table_name, get_weekly_table_name, get_input_csv_to_load
+from macros import get_weekly_table_name, get_input_csv_to_load
 
 with DAG('visits_loader', max_active_runs=1,
          default_args={
@@ -22,8 +22,7 @@ with DAG('visits_loader', max_active_runs=1,
              'retry_delay': timedelta(minutes=1)
          },
          template_searchpath=[os.getcwd()],
-         user_defined_macros={'get_staging_table_name': get_staging_table_name,
-                              'get_weekly_table_name': get_weekly_table_name,
+         user_defined_macros={'get_weekly_table_name': get_weekly_table_name,
                               'get_input_csv_to_load': get_input_csv_to_load},
          schedule_interval="@daily", catchup=True) as dag:
     input_data_file_path = get_data_location_base_dir(False) + '/date={{ ds }}/dataset.csv'
@@ -58,7 +57,6 @@ with DAG('visits_loader', max_active_runs=1,
         task_id='create_weekly_table',
         postgres_conn_id='docker_postgresql',
         database=get_database_final_schema(),
-        params={'base_table_name': base_table_name, 'is_staging': False},
         sql='/sql/create_weekly_table.sql'
     )
 
@@ -68,7 +66,6 @@ with DAG('visits_loader', max_active_runs=1,
         database=get_database_final_schema(),
         view_name='visits',
         schema=get_database_final_schema(),
-        params={'schema': get_database_final_schema(), 'base_table_name': base_table_name},
         sql='/sql/recreate_view.sql'
     )
 
@@ -76,7 +73,6 @@ with DAG('visits_loader', max_active_runs=1,
         task_id='load_data_to_the_final_table',
         postgres_conn_id='docker_postgresql',
         database=get_database_final_schema(),
-        params={'base_table_name': base_table_name},
         trigger_rule=TriggerRule.NONE_FAILED,
         sql='/sql/load_visits_to_weekly_table.sql'
     )
