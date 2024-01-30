@@ -41,7 +41,6 @@ services:
   scylla:
     container_name: dedp_ch04_scylla
     image: scylladb/scylla:5.1.0
-    restart: always
     command: --memory 750M
     ports:
     - 9042:9042
