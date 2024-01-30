@@ -1,4 +1,4 @@
-from typing import Any, Iterable
+from typing import Any, Iterable, Optional
 
 import pandas
 from pyspark.sql.streaming.state import GroupState
@@ -23,13 +23,14 @@ def map_visit_to_session(user_tuple: Any,
     else:
         should_use_event_time_for_watermark = current_state.getCurrentWatermarkMs() == 0
         base_watermark = current_state.getCurrentWatermarkMs()
-        data_min_append_time = 0
+        data_min_append_time: Optional[int] = None
         pages = []
         for input_df_for_group in input_rows:
-            data_min_append_time = int(input_df_for_group['append_time'].min()) * 1000
             pages = pages + list(input_df_for_group['page'])
             if should_use_event_time_for_watermark:
                 base_watermark = int(input_df_for_group['event_time'].max().timestamp()) * 1000
+            if not current_state.exists:
+                data_min_append_time = int(input_df_for_group['append_time'].min()) * 1000
 
         timeout_timestamp = base_watermark + session_expiration_time_50_seconds_as_ms
         current_state.setTimeoutTimestamp(timeout_timestamp)
@@ -37,9 +38,7 @@ def map_visit_to_session(user_tuple: Any,
         if current_state.exists:
             min_append_time, current_pages, = current_state.get
             visited_pages = current_pages + pages
-            current_state.update((
-                min(min_append_time, data_min_append_time), visited_pages
-                ,))
+            current_state.update((min_append_time, visited_pages,))
         else:
             current_state.update((data_min_append_time, pages,))
 
