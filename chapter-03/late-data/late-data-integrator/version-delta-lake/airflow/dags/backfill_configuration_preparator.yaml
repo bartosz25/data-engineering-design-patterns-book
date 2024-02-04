@@ -7,18 +7,18 @@ metadata:
 spec:
   type: Scala
   mode: cluster
-  image: "docker.io/library/depd_late_data_integrator:latest"
+  image: "docker.io/library/dedp_ch03_backfilling_configurator:latest"
   imagePullPolicy: Never
   mainClass: com.waitingforcode.BackfillConfigurationCreationJob
-  mainApplicationFile: "local:///tmp/late_data_integrator-1.0-SNAPSHOT-jar-with-dependencies.jar"
+  mainApplicationFile: "local:///tmp/backfilling_configurator-1.0-SNAPSHOT-jar-with-dependencies.jar"
   arguments:
     - '--outputLocation'
     - "/data_for_demo/"
     - '--tableFullPath'
-    - "/data_for_demo/visits"
+    - "/data_for_demo/devices"
     - '--outputBackfillingFileName'
     - "{{ params.config_file_name }}"
-    - '--partitionsToExclude'
+    - '--currentPartition'
     - "event_time={{ ds }}"
   sparkVersion: "3.5.0"
   restartPolicy:

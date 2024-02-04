@@ -2,8 +2,9 @@ package com.waitingforcode
 
 import org.apache.commons.io.FileUtils
 
-import java.io.{File, FileNotFoundException}
+import java.io.File
 import java.nio.charset.Charset
+import java.nio.file.NoSuchFileException
 
 object LastProcessedVersion {
 
@@ -14,12 +15,8 @@ object LastProcessedVersion {
       val versionFromFile = FileUtils.readFileToString(new File(s"${baseDir}/${VersionFile}"), Charset.forName("UTF-8"))
       versionFromFile.toLong
     } catch {
-      case _: FileNotFoundException => 0L
+      case _: NoSuchFileException => 0L
     }
-  }
-
-  def save(baseDir: String, version: Long) = {
-    FileUtils.writeStringToFile(new File(s"${baseDir}/${VersionFile}"), s"${version}", "UTF-8")
   }
 
 }

@@ -12,22 +12,20 @@ from airflow.providers.cncf.kubernetes.operators.spark_kubernetes import SparkKu
 from airflow.providers.cncf.kubernetes.sensors.spark_kubernetes import SparkKubernetesSensor
 from airflow.sensors.filesystem import FileSensor
 
-from config import get_data_location_base_dir, get_namespace
-
-with DAG('visits_aggregator', max_active_runs=1,
+with DAG('devices_loader', max_active_runs=1,
          default_args={
              'depend_on_past': True,
-             # the time interval corresponds to the data generator dates
-             'start_date': pendulum.parse("2023-11-01"),
-             'end_date': pendulum.parse("2023-11-06"),
+             'start_date': pendulum.parse("2024-01-01"),
+             'end_date': pendulum.parse("2024-01-02"),
              'retries': 3,
              'retry_delay': timedelta(minutes=1)
          },
          template_searchpath=[os.getcwd()],
          schedule_interval="@daily") as dag:
     backfilling_config_file_name = 'backfilling_configuration.json'
-    next_partition_template = get_data_location_base_dir() + '/date={{ data_interval_end | ds }}'
-    current_partition_template = get_data_location_base_dir() + '/date={{ ds }}'
+    dataset_base_dir = '/tmp/dedp/ch03/late-data-integrator/dataset/devices'
+    next_partition_template = dataset_base_dir + '/event_time={{ data_interval_end | ds }}'
+    current_partition_template = dataset_base_dir + '/event_time={{ ds }}'
 
     # This is the Extract part
     next_partition_sensor = FileSensor(
@@ -37,24 +35,15 @@ with DAG('visits_aggregator', max_active_runs=1,
         do_xcom_push=False
     )
 
-    aggregate_visits_trigger = SparkKubernetesOperator(
-        task_id='aggregate_visits_trigger',
-        namespace=get_namespace(),
-        application_file='backfill_configuration_preparator.yaml',
-        do_xcom_push=True
-    )
 
-    aggregate_visits_sensor = SparkKubernetesSensor(
-        task_id='aggregate_visits_sensor',
-        namespace=get_namespace(),
-        mode='reschedule',
-        application_name="{{ task_instance.xcom_pull(task_ids='load_job_trigger')['metadata']['name'] }}",
-        attach_log=True
-    )
+    @task
+    def process_devices():
+        print('...processing devices; it''s a dummy task as we focus on the pattern here')
 
+    namespace = 'dedp-ch03'
     backfilling_configuration_creation_job_trigger = SparkKubernetesOperator(
         task_id='backfilling_configuration_creation_job_trigger',
-        namespace=get_namespace(),
+        namespace=namespace,
         application_file='backfill_configuration_preparator.yaml',
         do_xcom_push=True,
         params={'config_file_name': backfilling_config_file_name}
@@ -62,9 +51,9 @@ with DAG('visits_aggregator', max_active_runs=1,
 
     backfilling_configuration_creation_job_sensor = SparkKubernetesSensor(
         task_id='backfilling_configuration_creation_job_sensor',
-        namespace=get_namespace(),
+        namespace=namespace,
         mode='reschedule',
-        application_name="{{ task_instance.xcom_pull(task_ids='load_job_trigger')['metadata']['name'] }}",
+        application_name="{{ task_instance.xcom_pull(task_ids='backfilling_configuration_creation_job_trigger')['metadata']['name'] }}",
         attach_log=True
     )
 
@@ -90,27 +79,27 @@ with DAG('visits_aggregator', max_active_runs=1,
     backfilling_data_provider_for_triggers = generate_backfilling_arguments()
     backfill_triggers = TriggerDagRunOperator.partial(
         task_id='backfill_past_partitions',
-        trigger_dag_id='visits_aggregator',
-        reset_dag_run=False
+        trigger_dag_id='devices_loader',
+        reset_dag_run=True
     ).expand_kwargs(backfilling_data_provider_for_triggers)
 
 
     def read_backfilling_configuration() -> Dict[str, Any]:
-        with open(f'/tmp/{backfilling_config_file_name}', 'r') as backfilling_file:
+        with open(f'/tmp/dedp/ch03/late-data-integrator/dataset/{backfilling_config_file_name}', 'r') as backfilling_file:
             return json.load(backfilling_file)
 
 
     @task
     def update_last_processed_versions():
         backfilling_configuration = read_backfilling_configuration()
-        last_processed_version = backfilling_configuration['last_processed_version']
+        last_processed_version = backfilling_configuration['lastProcessedVersion']
         with open('/tmp/_last_processed_version', 'w') as last_processed_version_file:
             last_processed_version_file.write(str(last_processed_version))
 
 
-    # current partition branch
     last_processed_versions_updater = update_last_processed_versions()
-    next_partition_sensor >> aggregate_visits_trigger >> aggregate_visits_sensor >> last_processed_versions_updater
+    # current partition branch
+    next_partition_sensor >> process_devices() >> last_processed_versions_updater
     # backfilling branch
     backfilling_configuration_creation_job_trigger >> backfilling_configuration_creation_job_sensor \
         >> last_processed_versions_updater

@@ -10,9 +10,8 @@ class PartitionsHandler(sparkSession: SparkSession, tablePath: String,
   lazy  val deltaLog = DeltaLog.forTable(sparkSession, tablePath)
   lazy val lastTableVersion = deltaLog.unsafeVolatileSnapshot.version
 
-  def listUnprocessedPartitions(): Iterator[Map[String, String]] = {
-
-    val changedPartitionsFromLastVersion: Iterator[Map[String,String]] = deltaLog
+  def listUnprocessedPartitions(): Seq[Map[String, String]] = {
+    val changedPartitionsFromLastVersion: Seq[Map[String,String]] = deltaLog
       .getChanges(firstUnprocessedVersion).map(files => {
       files._2
     }).flatMap(actions => {
@@ -24,7 +23,7 @@ class PartitionsHandler(sparkSession: SparkSession, tablePath: String,
         }
         impactedPartitions
       })
-    }).filter(_.nonEmpty).distinct
+    }).filter(_.nonEmpty).toSeq.distinct
     changedPartitionsFromLastVersion
   }
 
