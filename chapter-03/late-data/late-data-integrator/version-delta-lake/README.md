@@ -112,6 +112,7 @@ It should create late partition for an already processed DAG run.
 3. Now, the restarted run should process its partition but also trigger the backfilling for the 
 previously executed pipeline:
 ![backfilling_late_data.png](assets%2Fbackfilling_late_data.png)
+
 4. Verify the last processed version file and the most recent backfilling configuration:
 ```
 # last processed version
@@ -123,6 +124,8 @@ $ cat /tmp/dedp/ch03/late-data-integrator/dataset/backfilling_configuration.json
 
 {"partitions":[],"lastProcessedVersion":3}
 ```
+
 5. The DAG should now look like:
+
 ![expected_dag_backfilling.png](assets%2Fexpected_dag_backfilling.png)
 6. Stop minikube: `minikube stop`
