@@ -128,4 +128,5 @@ $ cat /tmp/dedp/ch03/late-data-integrator/dataset/backfilling_configuration.json
 5. The DAG should now look like:
 
 ![expected_dag_backfilling.png](assets%2Fexpected_dag_backfilling.png)
+
 6. Stop minikube: `minikube stop`
