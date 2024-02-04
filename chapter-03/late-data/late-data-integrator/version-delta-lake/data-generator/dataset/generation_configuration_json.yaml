@@ -1,0 +1,18 @@
+dataset:
+  rows: 100
+  composition_percentage:
+    duplicates: 0
+    missing_fields: 0
+    unprocessable_rows: 0
+  late_rows_percentage: 70
+data_blocker:
+  type: 'no'
+entity:
+  type: device
+generator:
+  type: one-shot
+writer:
+  type: json
+  configuration:
+    output_path: '/home/data_generator_user/data_generator_output/input'
+    clean_path: true
