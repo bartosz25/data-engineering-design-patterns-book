@@ -1,0 +1,20 @@
+dataset:
+  rows: 50
+  composition_percentage:
+    duplicates: 0
+    missing_fields: 0
+    unprocessable_rows: 0
+data_blocker:
+  type: 'no'
+entity:
+  type: visit
+  configuration:
+    start_time: '2023-11-06T00:00:00Z'
+generator:
+  type: one-shot
+writer:
+  type: csv
+  configuration:
+    output_path: '/home/data_generator_user/data_generator_output/'
+    clean_path: true
+  partitions: ['date=2023-11-06', 'date=2023-11-07', 'date=2023-11-08', 'date=2023-11-09']
