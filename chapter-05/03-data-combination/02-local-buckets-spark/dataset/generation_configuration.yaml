@@ -1,0 +1,43 @@
+reference_datasets:
+  - reference_key: 'users_provider'
+    entity:
+      type: user
+    dataset:
+      rows: 500
+    writer:
+      type: json
+      configuration:
+        output_path: '/home/data_generator_user/data_generator_output/input-users'
+        clean_path: true
+  - reference_key: 'devices_provider'
+    dataset:
+      rows: 15
+    entity:
+      type: device
+    writer:
+      type: json
+      configuration:
+        output_path: '/home/data_generator_user/data_generator_output/input-devices'
+        clean_path: true
+dataset:
+  rows: 500
+data_blocker:
+  type: sleep
+  configuration:
+    sleep_time_range_seconds:
+      from: 1
+      to: 6
+entity:
+  type: visit
+  configuration:
+    start_time: '2023-11-24T00:00:00Z'
+  reference_datasets:
+    users: 'users_provider'
+    devices: 'devices_provider'
+generator:
+  type: one-shot
+writer:
+  type: json
+  configuration:
+    output_path: '/home/data_generator_user/data_generator_output/input-visits'
+    clean_path: true
