@@ -1,0 +1,34 @@
+reference_datasets:
+  - reference_key: 'devices_provider'
+    entity:
+      type: device
+    dataset:
+      rows: 500
+    writer:
+      type: postgresql
+      configuration:
+        host: 'postgresql'
+        dbname: 'dedp'
+        db_schema: 'dedp'
+        user: 'dedp_test'
+        password: 'dedp_test'
+        table_name: 'devices'
+        table_columns: ['type', 'full_name', 'version']
+        row_fields_to_insert: ['type', 'full_name', 'version']
+dataset:
+  rows: 500
+data_blocker:
+  type: 'no'
+entity:
+  type: visit
+  configuration:
+    start_time: '2023-11-24T00:00:00Z'
+  reference_datasets:
+    devices: 'devices_provider'
+generator:
+  type: one-shot
+writer:
+  type: json
+  configuration:
+    output_path: '/home/data_generator_user/data_generator_output/input-visits'
+    clean_path: true
