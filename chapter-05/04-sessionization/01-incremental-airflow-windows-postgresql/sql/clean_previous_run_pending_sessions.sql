@@ -1,0 +1,1 @@
+DELETE FROM dedp.pending_sessions WHERE execution_time_id >= '{{ ds }}';
