@@ -1,0 +1,7 @@
+pyspark==3.5.0
+pandas==2.0.2
+pyarrow==14.0.1
+confluent-kafka==2.0.2
+flask==2.2.2
+Werkzeug==2.3.7
+requests==2.26.0
