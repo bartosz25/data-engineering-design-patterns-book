@@ -1,0 +1,22 @@
+version: '3'
+services:
+  data_generator_1:
+    image: 'waitingforcode/data-generator-blogging-platform:0.3-beta'
+    volumes:
+      - "/tmp/dedp/ch06/02-fan-int/01-aligned-fan-in-spark/input-1:/home/data_generator_user/data_generator_output"
+      - "./generation_configuration.yaml:/home/data_generator_user/generation_configuration.yaml"
+    entrypoint:
+      - python3
+      - /home/data_generator_user/data_generator/generate_dataset.py
+      - --config_file
+      - /home/data_generator_user/generation_configuration.yaml
+  data_generator_2:
+    image: 'waitingforcode/data-generator-blogging-platform:0.3-beta'
+    volumes:
+      - "/tmp/dedp/ch06/02-fan-int/01-aligned-fan-in-spark/input-2/:/home/data_generator_user/data_generator_output"
+      - "./generation_configuration.yaml:/home/data_generator_user/generation_configuration.yaml"
+    entrypoint:
+      - python3
+      - /home/data_generator_user/data_generator/generate_dataset.py
+      - --config_file
+      - /home/data_generator_user/generation_configuration.yaml
