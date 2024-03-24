@@ -1,0 +1,12 @@
+version: '3.1'
+services:
+  data_generator:
+    image: waitingforcode/data-generator-blogging-platform:0.3-beta
+    volumes:
+      - /tmp/dedp/ch06/01-sequence/02-isolated-sequencer-dataset-dependency/:/home/data_generator_user/data_generator_output
+      - ./generation_configuration.yaml:/home/data_generator_user/generation_configuration.yaml
+    entrypoint:
+      - python3
+      - /home/data_generator_user/data_generator/generate_dataset.py
+      - --config_file
+      - /home/data_generator_user/generation_configuration.yaml
