@@ -1,0 +1,17 @@
+dataset:
+  rows: 50
+  composition_percentage:
+    duplicates: 0
+    missing_fields: 0
+    unprocessable_rows: 0
+data_blocker:
+  type: 'no'
+entity:
+  type: device
+generator:
+  type: one-shot
+writer:
+  type: csv
+  configuration:
+    output_path: '/home/data_generator_user/data_generator_output/input'
+    clean_path: true
