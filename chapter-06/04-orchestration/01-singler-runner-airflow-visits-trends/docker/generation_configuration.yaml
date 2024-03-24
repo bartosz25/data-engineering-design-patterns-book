@@ -1,0 +1,16 @@
+dataset:
+  rows: 10
+data_blocker:
+  type: 'no'
+entity:
+  type: visit
+  configuration:
+    start_time: '2023-11-24T00:00:00Z'
+generator:
+  type: one-shot
+writer:
+  type: csv
+  configuration:
+    output_path: '/home/data_generator_user/data_generator_output/input'
+    clean_path: true
+  partitions: ['date=20240201', 'date=20240202', 'date=20240203', 'date=20240204', 'date=20240205']
