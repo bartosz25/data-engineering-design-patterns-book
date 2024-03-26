@@ -1,0 +1,12 @@
+version: '3.1'
+services:
+  data_generator:
+    image: waitingforcode/data-generator-blogging-platform:0.3-beta
+    volumes:
+      - /tmp/dedp/ch06/03-fan-out/02-exclusive-choice-airflow-migration/:/home/data_generator_user/data_generator_output
+      - ./generation_configuration.yaml:/home/data_generator_user/generation_configuration_json.yaml
+    entrypoint:
+      - python3
+      - /home/data_generator_user/data_generator/generate_dataset.py
+      - --config_file
+      - /home/data_generator_user/generation_configuration_json.yaml

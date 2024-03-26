@@ -1,0 +1,49 @@
+---
+apiVersion: "sparkoperator.k8s.io/v1beta2"
+kind: SparkApplication
+metadata:
+  name: "{{ params.output_format}}-visits-{{ macros.uuid.uuid4() }}"
+  namespace: dedp-ch06
+spec:
+  type: Python
+  pythonVersion: "3"
+  mode: cluster
+  image: "docker.io/library/depd_visits_loader:latest"
+  imagePullPolicy: Never
+  mainApplicationFile: "local:///tmp/visits_loader.py"
+  arguments:
+    - '--input_dir'
+    - "/data_for_demo/input/date={{ ds_nodash }}"
+    - '--output_dir'
+    - "/data_for_demo/output/{{params.output_format}}"
+    - '--format'
+    - '{{ params.output_format }}'
+  sparkVersion: "3.5.0"
+  sparkConf:
+    spark.jars.packages: "io.delta:delta-spark_2.12:3.1.0"
+    spark.jars.ivy: "/tmp/ivy"
+  restartPolicy:
+    type: Never
+  volumes:
+    - name: "datasets"
+      hostPath:
+        path: "/data_for_demo"
+  driver:
+    cores: 1
+    coreLimit: "1200m"
+    memory: "512m"
+    labels:
+      version: 3.5.0
+    serviceAccount: spark-editor
+    volumeMounts:
+    - mountPath: "/data_for_demo"
+      name: "datasets"
+  executor:
+    cores: 1
+    instances: 1
+    memory: "512m"
+    labels:
+      version: 3.5.0
+    volumeMounts:
+    - mountPath: "/data_for_demo"
+      name: "datasets"
