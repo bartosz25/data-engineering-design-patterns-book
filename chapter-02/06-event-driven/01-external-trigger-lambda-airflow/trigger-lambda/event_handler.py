@@ -16,7 +16,7 @@ def lambda_handler(event, context):
 
 
     """
-    my_ip = '192.168.1.55'
+    my_ip = '..........'
     headers = {
         'accept': 'application/json',
         'Content-Type': 'application/json',

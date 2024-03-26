@@ -1,7 +1,7 @@
 1. First, retrieve your internal IP of and put paste it to the `trigger-lambda/event_handler.py` file 
 under my_ip variable. Example for my IP:
 ```
-my_ip = '192.168.1.55'
+my_ip = '1.11.1.1'
 ```
 💡 For Ubuntu you can get it from https://help.ubuntu.com/stable/ubuntu-help/net-findip.html.en, for MacOS from https://www.security.org/vpn/find-mac-ip-address/
    and for Windows from https://support.microsoft.com/en-us/windows/find-your-ip-address-in-windows-f21a9bbc-c582-55cd-35e0-73431160a1b9
