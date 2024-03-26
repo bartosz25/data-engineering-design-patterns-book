@@ -13,3 +13,5 @@ The code snippets were ran and tested against the following configuration:
 * Docker 23.0.2
 * docker-compose 2.17.0
 * OS: Ubuntu, MacOS
+
+**Disclaimer**: although the examples tend to be the most realistic possible, their goal is to focus on one problem at a time. For that reason they'll often be simplified version of the code you should deploy on production. For that reason you might find hardcoded credentials or batch pipelines exposing the processed data without any data quality guards. Hopefully, thanks to the patterns presented in the book you'll be able to identify and apply all the best practices to your workloads. 
