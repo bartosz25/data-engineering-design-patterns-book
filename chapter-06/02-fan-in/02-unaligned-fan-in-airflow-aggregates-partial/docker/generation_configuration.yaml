@@ -1,0 +1,39 @@
+dataset:
+  rows: 10
+data_blocker:
+  type: 'no'
+entity:
+  type: visit
+  configuration:
+    start_time: '2024-02-01T00:00:00Z'
+generator:
+  type: one-shot
+writer:
+  type: csv
+  configuration:
+    output_path: '/home/data_generator_user/data_generator_output/input'
+    clean_path: true
+  partitions: ['date=20240201/hour=00',
+               'date=20240201/hour=01',
+               'date=20240201/hour=02',
+               'date=20240201/hour=03',
+               'date=20240201/hour=04',
+               'date=20240201/hour=05',
+               # skip some random hours 'date=20240201/hour=06',
+               'date=20240201/hour=07',
+               'date=20240201/hour=08',
+               'date=20240201/hour=09',
+               'date=20240201/hour=10',
+               # skip this too 'date=20240201/hour=11',
+               'date=20240201/hour=12',
+               'date=20240201/hour=13',
+               'date=20240201/hour=14',
+               'date=20240201/hour=15',
+               # skip the next 3 'date=20240201/hour=16',
+               #... 'date=20240201/hour=17',
+               #... 'date=20240201/hour=18',
+               'date=20240201/hour=19',
+               'date=20240201/hour=20',
+               'date=20240201/hour=21',
+               'date=20240201/hour=22',
+               'date=20240201/hour=23']
