@@ -15,7 +15,7 @@ cd ../
 3. Open the Apache Airflow UI and connect: http://localhost:8080 (dedp/dedp)
 4. Explain the [visits_trends_generator.py](dags%2Fvisits_trends_generator.py)
 * the DAG is configured as _single runner_ because of the following properties:
-  * `'depend_on_past': True,` - means that one task cannot start as long as its predecessor (same task from the previous
+  * `'depends_on_past': True,` - means that one task cannot start as long as its predecessor (same task from the previous
   execution) didn't succeed
   * `max_active_runs=1,` - means there is only one pipeline running at a given time
 * the reason behind this requirement is related to the business logic, and more specifically, to how the 

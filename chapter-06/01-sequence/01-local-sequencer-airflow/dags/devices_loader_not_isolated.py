@@ -10,7 +10,7 @@ from macros import get_input_csv_to_load_for_host, get_table_name
 
 with DAG('devices_loader_not_isolated', max_active_runs=1,
          default_args={
-             'depend_on_past': True,
+             'depends_on_past': True,
              'start_date': pendulum.now(tz='utc').subtract(days=4),
              'retries': 3,
              'retry_delay': timedelta(minutes=1)

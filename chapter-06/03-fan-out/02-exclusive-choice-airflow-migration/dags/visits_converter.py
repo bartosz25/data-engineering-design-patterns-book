@@ -10,7 +10,7 @@ from airflow.sensors.filesystem import FileSensor
 
 with DAG('visits_converter', max_active_runs=1,
          default_args={
-             'depend_on_past': False,
+             'depends_on_past': False,
              'start_date': pendulum.datetime(2024, 2, 1),
              'end_date': pendulum.datetime(2024, 2, 5),
              'retries': 3,

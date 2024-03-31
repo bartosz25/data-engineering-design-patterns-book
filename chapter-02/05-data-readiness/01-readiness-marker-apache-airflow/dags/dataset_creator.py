@@ -9,7 +9,7 @@ from airflow.decorators import task
 
 with DAG('dataset_creator', max_active_runs=1,
          default_args={
-             'depend_on_past': True,
+             'depends_on_past': True,
              'start_date': pendulum.yesterday(tz='utc'),
              'retries': 3,
              'retry_delay': timedelta(minutes=1)

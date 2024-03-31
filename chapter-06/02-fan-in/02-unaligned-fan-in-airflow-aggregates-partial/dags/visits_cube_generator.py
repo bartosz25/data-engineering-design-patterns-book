@@ -9,7 +9,7 @@ from airflow.utils.trigger_rule import TriggerRule
 
 with DAG('visits_cube_generator', max_active_runs=1,
          default_args={
-             'depend_on_past': True,
+             'depends_on_past': True,
              'start_date': pendulum.datetime(2024, 2, 1),
              'end_date': pendulum.datetime(2024, 2, 1),
              'retries': 3,

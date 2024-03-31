@@ -11,7 +11,7 @@ from config import get_data_location_base_dir, get_namespace
 
 with DAG('visits_loader', max_active_runs=1,
          default_args={
-             'depend_on_past': True,
+             'depends_on_past': True,
              # the time interval corresponds to the data generator dates
              'start_date': pendulum.parse("2023-11-01"),
              'end_date': pendulum.parse("2023-11-03"),

@@ -20,7 +20,7 @@ docker-compose down --volumes; docker-compose up
   * each run doesn't alter the input dataset which, for the purpose of this demo, is shared across the executions
 * more specifically, the DAG is configured as:
   * running at most 5 different instances at the same time (`max_active_runs=5,`)
-  * running tasks in parallel as they don't depend on each other (`'depend_on_past': False,`)
+  * running tasks in parallel as they don't depend on each other (`'depends_on_past': False,`)
 
 5. Enable the `devices_loader` on the UI. You should see multiple instances of the pipeline starting at the same time:
 ![concurrent_runs.png](assets%2Fconcurrent_runs.png)

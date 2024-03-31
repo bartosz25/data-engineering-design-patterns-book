@@ -16,7 +16,7 @@ from macros import get_weekly_table_name, get_input_csv_to_load
 
 with DAG('visits_loader', max_active_runs=1,
          default_args={
-             'depend_on_past': True,
+             'depends_on_past': True,
              'start_date': pendulum.datetime(2023, 11, 6),
              'end_date': pendulum.datetime(2023, 11, 9),
              'retries': 3,

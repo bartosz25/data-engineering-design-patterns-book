@@ -3,14 +3,13 @@ from datetime import timedelta
 
 import pendulum
 from airflow import DAG
-from airflow.operators.empty import EmptyOperator
 from airflow.providers.cncf.kubernetes.operators.spark_kubernetes import SparkKubernetesOperator
 from airflow.providers.cncf.kubernetes.sensors.spark_kubernetes import SparkKubernetesSensor
 from airflow.sensors.filesystem import FileSensor
 
 with DAG('visits_converter', max_active_runs=2,
          default_args={
-             'depend_on_past': False,
+             'depends_on_past': False,
              'start_date': pendulum.datetime(2024, 2, 1),
              'end_date': pendulum.datetime(2024, 2, 5),
              'retries': 3,

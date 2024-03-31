@@ -10,7 +10,7 @@ from macros import get_table_name
 
 with DAG('devices_aggregator', max_active_runs=1,
          default_args={
-             'depend_on_past': True,
+             'depends_on_past': True,
              'start_date': pendulum.now(tz='utc').subtract(days=4),
              'retries': 3,
              'retry_delay': timedelta(minutes=1)
