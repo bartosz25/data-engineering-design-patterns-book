@@ -8,7 +8,7 @@ from airflow.decorators import task
 
 with DAG('devices_loader', max_active_runs=5,
          default_args={
-             'depend_on_past': False,
+             'depends_on_past': False,
              'start_date': pendulum.yesterday(tz='utc'),
              'retries': 3,
              'retry_delay': timedelta(minutes=1)

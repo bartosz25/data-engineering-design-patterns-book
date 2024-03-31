@@ -14,7 +14,7 @@ from airflow.sensors.filesystem import FileSensor
 
 with DAG('devices_loader', max_active_runs=1,
          default_args={
-             'depend_on_past': True,
+             'depends_on_past': True,
              'start_date': pendulum.parse("2024-01-01"),
              'end_date': pendulum.parse("2024-01-02"),
              'retries': 3,
