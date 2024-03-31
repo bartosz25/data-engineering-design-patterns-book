@@ -26,10 +26,6 @@ with DAG('visits_converter', max_active_runs=2,
         filepath=input_dir + '/date={{ ds_nodash }}/dataset.json'
     )
 
-    # this empty task is required; otherwise the DAG can consider as succeeded if one of the branches
-    # succeeds
-    marker_task = EmptyOperator(task_id='marker_task')
-
     visits_loader_job_k8s_namespace = 'dedp-ch06'
     for output_format in ['delta', 'csv']:
         load_job_trigger = SparkKubernetesOperator(
@@ -48,4 +44,4 @@ with DAG('visits_converter', max_active_runs=2,
             attach_log=True
         )
 
-        file_sensor >> load_job_trigger >> load_job_sensor >> marker_task
+        file_sensor >> load_job_trigger >> load_job_sensor
