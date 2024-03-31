@@ -15,6 +15,7 @@ if __name__ == "__main__":
 
     input_dataset = (spark_session.read.schema('type STRING, full_name STRING, version STRING').format('json')
                      .load(DemoConfiguration.INPUT_PATH))
+    input_dataset.persist()
 
     (input_dataset.write.mode('append').format('delta')
      .option('txnVersion', batch_id).option('txnAppId', app_id)
