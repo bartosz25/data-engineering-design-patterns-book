@@ -1,0 +1,58 @@
+{
+  "StartAt": "Generate partitions to process",
+  "TimeoutSeconds": 30,
+  "States": {
+    "Generate partitions to process": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "arn:aws:lambda:us-east-1:000000000000:function:partitions_detector"
+      },
+      "OutputPath": "$.Payload",
+      "Next": "Fan-out hourly partitions"
+    },
+    "Fan-out hourly partitions": {
+      "Comment": "Start multiple executions of Lambda functions to process hourly partitions",
+      "Type": "Map",
+      "OutputPath":"$[*].Payload",
+      "Next":"Create table",
+      "InputPath": "$",
+      "Parameters": {
+          "PartitionNumber.$": "$$.Map.Item.Value"
+      },
+      "Iterator": {
+        "StartAt": "Submit Lambda Job",
+        "States": {
+          "Submit Lambda Job": {
+            "Type": "Task",
+            "Resource": "arn:aws:states:::lambda:invoke",
+            "Parameters": {
+              "FunctionName": "arn:aws:lambda:us-east-1:000000000000:function:partitions_processor",
+              "Payload":{
+                "PartitionNumber.$": "$.PartitionNumber"
+              }
+            },
+            "ResultPath":"$",
+            "End":true
+          }
+        }
+      }
+    },
+    "Create table":{
+      "Type":"Task",
+      "InputPath": "$",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters":  {
+        "FunctionName": "arn:aws:lambda:us-east-1:000000000000:function:table_creator",
+        "Payload":{
+          "ProcessorResults.$": "$"
+        }
+      },
+      "Next":"End of Step Function"
+    },
+    "End of Step Function":{
+       "Type":"Pass",
+       "End":true
+    }
+  }
+}
