@@ -1,5 +1,13 @@
 # Data ordering - bin-packer with Apache Spark and Apache Kafka
 
+------
+
+⚠️ Apache Kafka is not a data store with partial commits semantic but at the same time it's one of the most popular streaming brokers. The popularity
+is the reason of its presence in the demo. 
+If you are looking for a pure example for partial commits, check the example with Amazon Kinesis Data Streams.
+
+---
+
 1. Start Apache Kafka broker and generate the dataset:
 ```
 cd docker
