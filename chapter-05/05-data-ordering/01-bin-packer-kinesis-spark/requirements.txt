@@ -1,0 +1,7 @@
+pyspark==3.5.0
+pandas==2.0.2
+pyarrow==14.0.1
+localstack==3.0.2
+awscli-local==0.21.1
+awscli==1.31.8
+boto3==1.33.8
