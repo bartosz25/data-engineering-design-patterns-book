@@ -12,7 +12,7 @@ docker-compose down --volumes; docker-compose up
   `JSON` or `CSV`. Otherwise, Apache Spark tries to infers the schema from the dataset by processing it twice
 
 3. Run [devices_table_reader.py](devices_table_reader.py) to read the loaded data.
-4. Run [load_json_empty_data.py](load_json_partial_data.py)
+4. Run [load_json_partial_data.py](load_json_partial_data.py)
 * the job loads an empty dataset, hence overwrites the whole table
 5. Run [devices_table_reader_past_version.py](devices_table_reader_past_version.py)
 * the job uses the `option('versionAsOf', '0')` helper to restore the previous version of the dataset

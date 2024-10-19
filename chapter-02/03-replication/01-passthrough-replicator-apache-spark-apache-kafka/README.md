@@ -12,7 +12,7 @@ docker-compose down --volumes; docker-compose up
   to avoid data altering issues
   * instead it uses the most basic `text` API
   * 💡 if you don't need a distributed processing, you can implement the pattern with copy CLI
-3. Run the `dataset_reader_raw.py`
+3. Run the `dataset_replicator_raw.py`
 4. Verify the synchronization result by running the `dataset_reader_raw.py`
 
 ## Apache Kafka replication

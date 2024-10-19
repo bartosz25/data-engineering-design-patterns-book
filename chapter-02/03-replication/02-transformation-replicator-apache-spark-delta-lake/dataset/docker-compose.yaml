@@ -1,7 +1,7 @@
 version: '3.1'
 services:
   data_generator:
-    image: waitingforcode/data-generator-blogging-platform:0.1-beta
+    image: waitingforcode/data-generator-blogging-platform:0.3-beta
     container_name: dedp_test_full_loader_exposition
     volumes:
       -  /tmp/dedp/ch02/replication/transformation-replicator:/home/data_generator_user/data_generator_output

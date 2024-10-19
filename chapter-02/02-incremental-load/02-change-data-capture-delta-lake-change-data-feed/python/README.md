@@ -1,6 +1,6 @@
 1. Create the dataset:
 ```
-cd dataset
+cd ../dataset
 mkdir -p /tmp/dedp/ch02/incremental-load/change-data-capture/
 docker-compose down --volumes; docker-compose up
 ```

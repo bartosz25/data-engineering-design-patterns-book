@@ -2,7 +2,7 @@ version: '3.1'
 services:
   kafka:
     image: 'bitnami/kafka:3.5'
-    container_name: docker_kafka_
+    container_name: docker_kafka_1
     ports:
       - '9092:9092'
       - '9094:9094'
@@ -22,7 +22,7 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    image: waitingforcode/data-generator-blogging-platform:0.1-beta
+    image: waitingforcode/data-generator-blogging-platform:0.3-beta
     container_name: dedp_data_generator_debezium
     volumes:
       - ./generation_configuration.yaml:/home/data_generator_user/generation_configuration.yaml

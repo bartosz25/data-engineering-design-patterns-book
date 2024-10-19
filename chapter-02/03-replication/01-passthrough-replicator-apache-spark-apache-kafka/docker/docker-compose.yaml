@@ -19,7 +19,7 @@ services:
       - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
       - KAFKA_DELETE_TOPIC_ENABLE=true
   data_generator:
-    image: waitingforcode/data-generator-blogging-platform:0.1-beta
+    image: waitingforcode/data-generator-blogging-platform:0.3-beta
     container_name: data_generator_passthrough_replicator
     volumes:
       - /tmp/dedp/ch02/replication/passthrough-replicator:/home/data_generator_user/data_generator_output

@@ -5,6 +5,7 @@ docker-compose down --volumes; docker-compose up
 ```
 2. Register the Kafka Connect consumer that will stream PostgreSQL records to Apache Kafka:
 ```
+cd docker/
 curl -i -X POST -H "Accept:application/json" -H  "Content-Type:application/json" http://localhost:8083/connectors/ -d @register-postgresql-connector.json
 ``` 
 3. Open the [visits_stream_processor.py](visits_stream_processor.py)

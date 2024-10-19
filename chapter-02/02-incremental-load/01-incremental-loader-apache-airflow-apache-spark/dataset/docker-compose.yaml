@@ -1,7 +1,7 @@
 version: '3.1'
 services:
   data_generator:
-    image: waitingforcode/data-generator-blogging-platform:0.1-beta
+    image: waitingforcode/data-generator-blogging-platform:0.3-beta
     container_name: data_generator_passthrough_replicator
     volumes:
       - /tmp/dedp/ch02/incremental_loader/:/home/data_generator_user/data_generator_output

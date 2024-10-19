@@ -17,6 +17,7 @@ if __name__ == "__main__":
     devices_table.toDF().show(truncate=False)
 
     print('First version')
+    # Restore operation is an alternative to this code
     (spark_session.read.format('delta').option('versionAsOf', '0').load(DemoConfiguration.DEVICES_TABLE)
      .write.mode('overwrite').format('delta').save(DemoConfiguration.DEVICES_TABLE))
 
