@@ -77,6 +77,9 @@ _logical data removal_.
 
 ## E
 
+### Entry
+Other term used to represent a [row](#row).
+
 ### ELT
 An acronym for Extract Load Transform. These three words describe the main steps of a data pipeline that includes
 data retrieval, data loading to the output data store, and finally, the transformation on top of the loaded data.
@@ -105,6 +108,9 @@ The property describing a system which doesn't accept in-place changes. In other
 ### Incremental data processing
 Data processing that doesn't involve the full dataset. Instead, it only addresses new or updated rows, greatly reducing
 the data volume.
+
+### Item
+Other term used to represent a [row](#row).
 
 ## L
 
@@ -158,9 +164,16 @@ Apache Cassandra to provide fast key-based access and GCP BigQuery for the data 
 ### Raw data
 Represents data that is not processed at any moment in our data pipeline. In other words, the data have exactly the same format as during its initial generation.
 
+### Reference dataset
+Usually long-term data used to classify and define other datasets. Examples here are language codes, transaction codes, 
+or yet country codes.
+
 ### Reprocessing
 The action of processing already processed dataset, for example because of a modified business logic or a 
 data quality issues introduced by a buggy pipeline.
+
+### Row
+A single group of related data.
 
 ## S
 
