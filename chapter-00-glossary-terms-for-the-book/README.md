@@ -40,6 +40,8 @@ A set of [node](#nodes)s used to perform a distributed computation.
 A data structure that logs every operation on a data store, such as a new `INSERT` or `UPDATE` operations.
 
 ## D
+### Data at rest
+Term used to describe datasets that are stored in a database but ready for querying or processing. 
 
 ### DAG
 An acronym for Directed Acyclic Graph. It represents a graph with directions (i.e. moves from one node to another)
@@ -51,6 +53,10 @@ various sensors and operators.
 
 ### Data ingestion
 Process of bringing data to a data store.
+
+### Data in motion
+Term used to describe datasets moving from one point to another, for example from 
+a data producer to a data consumer through a streaming broker. Opposite of [data at rest](#data-at-rest).
 
 ### Data lake
 A data repository storing data in its native and raw format, often by relying on _virtually_ unlimited storage capacities
