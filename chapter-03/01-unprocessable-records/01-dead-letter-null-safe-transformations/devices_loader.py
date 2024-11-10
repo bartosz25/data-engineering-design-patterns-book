@@ -18,11 +18,11 @@ if __name__ == "__main__":
 
     input_dataset.createTempView('devices_to_load')
 
-    # for the record: https://spark.apache.org/docs/3.0.0-preview/sql-ref-null-semantics.html#null-in-tolerant-expressions-
+    # for the record: https://spark.apache.org/docs/3.5.0/sql-ref-null-semantics.html#expressions-
     devices_to_load_with_validity_flag = spark_session.sql('''
     SELECT type, full_name, version, name_with_version, 
         CASE 
-            WHEN name_with_version IS NULL THEN false
+            WHEN (full_name IS NOT NULL OR version IS NOT NULL) AND name_with_version IS NULL THEN false
             ELSE true
         END AS is_valid
      FROM (SELECT type, full_name, version, CONCAT(full_name, version) AS name_with_version FROM devices_to_load)

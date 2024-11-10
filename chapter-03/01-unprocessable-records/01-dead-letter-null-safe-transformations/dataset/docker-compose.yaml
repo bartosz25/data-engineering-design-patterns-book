@@ -1,7 +1,7 @@
 version: '3'
 services:
   data_generator:
-    image: 'waitingforcode/data-generator-blogging-platform:0.2-beta'
+    image: 'waitingforcode/data-generator-blogging-platform:0.3-beta'
     container_name: data_generator_full_loader
     volumes:
       - "/tmp/dedp/ch03/dead-letter/:/home/data_generator_user/data_generator_output"

@@ -16,4 +16,4 @@ if __name__ == "__main__":
 
     devices_table = DeltaTable.forPath(spark_session, f'{base_dir}/output/devices-table')
 
-    devices_table.toDF().show(truncate=False)
+    devices_table.toDF().filter('name_with_version IS NOT NULL').show(truncate=False)
