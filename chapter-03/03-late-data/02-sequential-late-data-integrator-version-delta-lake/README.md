@@ -1,4 +1,4 @@
-# Late data integrator
+# Sequential late data integrator
 ## Data preparation
 1. Generate datasets without the late data for the demo:
 ```
