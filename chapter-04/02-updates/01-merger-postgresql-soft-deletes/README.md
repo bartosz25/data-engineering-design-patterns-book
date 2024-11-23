@@ -22,7 +22,7 @@ WHEN MATCHED AND input.is_deleted = true THEN
     DELETE
 WHEN MATCHED AND input.is_deleted = false THEN 
     UPDATE SET full_name = input.full_name 
-WHEN NOT MATCHED THEN
+WHEN NOT MATCHED AND input.is_deleted = false THEN
     INSERT (full_name, version, type) VALUES (input.full_name, input.version, input.type);
     
 MERGE 3
@@ -57,7 +57,7 @@ WHEN MATCHED AND input.is_deleted = true THEN
     DELETE
 WHEN MATCHED AND input.is_deleted = false THEN 
     UPDATE SET full_name = input.full_name 
-WHEN NOT MATCHED THEN
+WHEN NOT MATCHED AND input.is_deleted = false THEN
     INSERT (full_name, version, type) VALUES (input.full_name, input.version, input.type);
 MERGE 3
 
@@ -69,3 +69,8 @@ dedp=# SELECT * FROM dedp.devices_output ORDER BY type, full_name;
  iphone | APPLE iPhone 8 Plus (Silver, 256 GB)   | iOS 13
 (3 rows)
 ```
+
+ℹ️ `WHEN NOT MATCHED AND input.is_deleted = false THEN` could be replaced by `WHEN NOT MATCHED THEN`. You can add the 
+`AND...` condition if you run the first `MERGE` operation on top of an already changed input dataset, e.g. your 
+data provider has already generated 10 versions but you start ingesting the data only from the 10th version; in that case,
+without the `AND...` validation, you would insert deleted rows.
