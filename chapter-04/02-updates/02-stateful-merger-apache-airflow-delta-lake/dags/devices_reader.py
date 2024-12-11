@@ -16,8 +16,6 @@ with (DAG('devices_reader', max_active_runs=1,
          },
          template_searchpath=[os.getcwd()],
          schedule_interval=None, catchup=False) as dag):
-    BASE_DIR = '/tmp/dedp/ch04/02-updates/01-merger-apache-airflow-delta-lake-state-table/input'
-
     @task.virtualenv(
         task_id="read_devices", requirements=["delta-spark==3.0.0", "pyspark==3.5.0"], system_site_packages=False
     )
@@ -53,7 +51,7 @@ with (DAG('devices_reader', max_active_runs=1,
                                                                 "org.apache.spark.sql.delta.catalog.DeltaCatalog")
                                                         ).getOrCreate())
 
-        spark_session.sql('SELECT * FROM `default`.`versions` ORDER BY job_version ASC').show(truncate=False)
+        spark_session.sql('SELECT * FROM `default`.`versions` ORDER BY execution_time ASC').show(truncate=False)
 
     read_devices()
 
