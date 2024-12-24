@@ -88,13 +88,13 @@ helm install dedp-spark-operator spark-operator/spark-operator --namespace $K8S_
 minikube dashboard
 ``` 
 
-## Pipeline TODO!
+## Pipeline
 1. Explain the [devices_loader.py](airflow%2Fdags%2Fdevices_loader.py)
-* the job implements the pattern via two parallel branches
-  * one to process the data
-  * one to generate the backfilling configuration
-* upon processing the data, the job updates the last processed version and triggers backfilling for past partitions
-  if some of them received late data
+* the job starts by loading data for the current partition and processing partitions with late data later
+* _mark_partition_as_being_processed_ and _get_late_data_and_mark_as_in_progress_ run sequentially to avoid
+scheduling concurrency that might lead to processing the same partition by two different runs
+* the DAG uses a custom `SparkKubernetesOperatorWithDeferrableDriverPodOperator` that awaits for the driver
+pod to complete
 2. Start the Airflow instance:
 ```
 ./start.sh
