@@ -189,3 +189,21 @@ late partitions only retrieves past partitions. It explains why two other partit
 by the way, are omitted here.
 
 4. Stop minikube: `minikube stop`
+
+## Concurrency simulation
+As you saw in the screenshots, the pipeline doesn't allow concurrent runs for some tasks that could create
+duplicated runs if they were created at the same time. For the sake of simplicity, let's assume a pipeline with
+the following configuration:
+
+* disabled state
+* daily trigger
+* catch-up mode enabled 
+* disabled date 2024-12-01
+* current date 2024-12-05
+* late data partitions: 2024-11-30, 2024-11-29
+
+If you reenable the pipeline, due to the past dependency constraints on some tasks, it'll always 
+keep one past-dependent task instance running, while allow multiple executions for the others. Below you
+can find a simulation where the blue color marks tasks currently processed and the green one already processed:
+
+![simulation.gif](assets/simulation.gif)
