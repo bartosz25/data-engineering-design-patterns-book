@@ -6,3 +6,5 @@ awscli-local==0.21.1
 awscli==1.31.8
 boto3==1.33.8
 requests==2.31.0
+# I don't understand why but Flask-Session2 seems to be missing while setting Airflow up
+Flask-Session2==1.3.1

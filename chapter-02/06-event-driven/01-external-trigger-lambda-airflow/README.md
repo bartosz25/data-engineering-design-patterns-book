@@ -1,3 +1,5 @@
+# Event-driven trigger - Apache Airflow and AWS via Localstack
+ 
 1. First, retrieve your internal IP of and put paste it to the `trigger-lambda/event_handler.py` file 
 under my_ip variable. Example for my IP:
 ```
@@ -14,7 +16,7 @@ localstack start -d
 3. Generate the devices dataset:
 ```
 cd dataset
-mkdir -p /tmp/dedp/ch02/event-driven/external-trigger/input/
+mkdir -p /tmp/dedp/ch02/06-event-driven/01-external-trigger-lambda-airflow/input/
 docker-compose down --volumes; docker-compose up
 ```
 4. Prepare the Lambda package for deployment:
@@ -30,6 +32,9 @@ cd ..
 ```
 5. Initialize the local AWS stack:
 ```
+export AWS_ACCESS_KEY_ID='default'
+export AWS_SECRET_ACCESS_KEY='default'
+
 # Create the bucket first
 awslocal s3api create-bucket --bucket devices
 
@@ -42,6 +47,8 @@ aws lambda create-function \
 --region us-east-1 \
 --zip-file fileb://trigger-lambda/my_deployment_package.zip \
 --role arn:aws:iam::123456789000:role/ignoreme
+
+awslocal lambda wait function-active-v2 --function-name devices-loader-trigger
 
 # Configure the Lambda S3 trigger
 aws s3api put-bucket-notification-configuration --bucket devices --notification-configuration file://s3hook.json --endpoint-url http://localhost:4566
@@ -60,8 +67,8 @@ cd airflow
 ```
 awslocal s3api put-object \
   --bucket devices \
-  --key /tmp/dedp/ch02/event-driven/external-trigger/input/dataset.json \
-  --body /tmp/dedp/ch02/event-driven/external-trigger/input/dataset.json
+  --key /tmp/dedp/ch02/06-event-driven/01-external-trigger-lambda-airflow/input/dataset.json \
+  --body /tmp/dedp/ch02/06-event-driven/01-external-trigger-lambda-airflow/input/dataset.json
 ```
 💡 For the sake of simplicity, the key of the uploaded object follows its path on the local file system.
 
@@ -69,13 +76,13 @@ awslocal s3api put-object \
 ![running_dag.png](assets%2Frunning_dag.png)
 11. Once the run completes, verify if the loaded file is present in the output directory:
 ```
-$ tree  /tmp/dedp/ch02/event-driven/external-trigger/output/
-/tmp/dedp/ch02/event-driven/external-trigger/output/
+$ tree  /tmp/dedp/ch02/06-event-driven/01-external-trigger-lambda-airflow/output/
+/tmp/dedp/ch02/06-event-driven/01-external-trigger-lambda-airflow/output/
 └── devices_5213e115-840e-481d-a474-ebd43e0d423a.json
 
 0 directories, 1 file
 
-$ head  /tmp/dedp/ch02/event-driven/external-trigger/output/devices_5213e115-840e-481d-a474-ebd43e0d423a.json 
+$ head  /tmp/dedp/ch02/06-event-driven/01-external-trigger-lambda-airflow/output/devices_5213e115-840e-481d-a474-ebd43e0d423a.json 
 {"type": "mac", "full_name": "MacBook Air (15-inch, M2, 2023)", "version": "macOS Ventura"}
 {"type": "galaxy", "full_name": "Galaxy Gio", "version": "Android 14"}
 {"type": "galaxy", "full_name": "Galaxy Nexus", "version": "Android 15"}

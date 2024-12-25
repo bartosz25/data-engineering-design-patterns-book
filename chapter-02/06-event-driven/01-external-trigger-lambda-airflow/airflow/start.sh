@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+export AIRFLOW_HOME=~/airflow-2.7.3
 airflow db reset
 airflow db init
 airflow users create --username "dedp" --role "Admin" --password "dedp" --email "empty" --firstname "admin" --lastname "admin"

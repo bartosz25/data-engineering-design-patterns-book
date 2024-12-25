@@ -1,10 +1,10 @@
 version: '3'
 services:
   data_generator:
-    image: 'waitingforcode/data-generator-blogging-platform:0.1-beta'
+    image: 'waitingforcode/data-generator-blogging-platform:0.3-beta'
     container_name: data_generator_event_driven
     volumes:
-      - "/tmp/dedp/ch02/event-driven/external-trigger/:/home/data_generator_user/data_generator_output"
+      - "/tmp/dedp/ch02/06-event-driven/01-external-trigger-lambda-airflow/:/home/data_generator_user/data_generator_output"
       - "./generation_configuration.yaml:/home/data_generator_user/generation_configuration.yaml"
     entrypoint:
       - python3

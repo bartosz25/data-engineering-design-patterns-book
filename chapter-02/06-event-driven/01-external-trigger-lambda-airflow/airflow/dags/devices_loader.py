@@ -19,7 +19,7 @@ with DAG('devices_loader', max_active_runs=5,
         import shutil
         from airflow.operators.python import get_current_context
 
-        dataset_dir = '/tmp/dedp/ch02/event-driven/external-trigger/output/'
+        dataset_dir = '/tmp/dedp/ch02/06-event-driven/01-external-trigger-lambda-airflow/output/'
         os.makedirs(dataset_dir, exist_ok=True)
         context = get_current_context()
         dag_run = context["dag_run"]
