@@ -1,0 +1,1 @@
+DELETE FROM dedp.devices_history WHERE execution_time >= '{{ ts }}'
