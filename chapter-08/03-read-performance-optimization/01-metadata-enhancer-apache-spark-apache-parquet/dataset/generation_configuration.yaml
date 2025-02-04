@@ -1,0 +1,13 @@
+dataset:
+  rows: 50000
+data_blocker:
+  type: 'no'
+entity:
+  type: user
+generator:
+  type: one-shot
+writer:
+  type: json
+  configuration:
+    output_path: '/home/data_generator_user/data_generator_output/'
+    clean_path: true

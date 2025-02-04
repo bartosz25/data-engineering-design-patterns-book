@@ -1,0 +1,12 @@
+version: '3'
+services:
+  data_generator:
+    image: 'waitingforcode/data-generator-blogging-platform:0.3-beta'
+    volumes:
+      - "./generation_configuration.yaml:/home/data_generator_user/generation_configuration.yaml"
+      - /tmp/dedp/ch08/01-partitioning/02-vertical-partitioner-apache-spark/input:/home/data_generator_user/data_generator_output
+    entrypoint:
+      - python3
+      - /home/data_generator_user/data_generator/generate_dataset.py
+      - --config_file
+      - /home/data_generator_user/generation_configuration.yaml

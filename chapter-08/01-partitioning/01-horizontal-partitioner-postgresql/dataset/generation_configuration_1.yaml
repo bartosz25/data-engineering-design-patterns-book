@@ -1,0 +1,23 @@
+dataset:
+  rows: 500
+data_blocker:
+  type: 'no'
+entity:
+  type: visit
+  configuration:
+    start_time: '2023-11-24T00:00:00Z'
+generator:
+  type: fixed-times
+  configuration:
+    all_runs: 2
+writer:
+  type: postgresql
+  configuration:
+    host: 'postgresql'
+    dbname: 'dedp'
+    db_schema: 'dedp'
+    user: 'dedp_test'
+    password: 'dedp_test'
+    table_name: 'visits_all_20231124'
+    table_columns: ['visit_id', 'event_time', 'user_id', 'page', 'context']
+    row_fields_to_insert: ['visit_id', 'event_time', 'user_id', 'page', 'context']

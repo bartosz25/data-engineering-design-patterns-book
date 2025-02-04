@@ -1,0 +1,27 @@
+version: '3'
+services:
+  data_generator:
+    image: 'waitingforcode/data-generator-blogging-platform:0.3-beta'
+    depends_on:
+      postgresql:
+        condition: service_healthy
+    volumes:
+      - "./generation_configuration.yaml:/home/data_generator_user/generation_configuration.yaml"
+    entrypoint:
+      - python3
+      - /home/data_generator_user/data_generator/generate_dataset.py
+      - --config_file
+      - /home/data_generator_user/generation_configuration.yaml
+  postgresql:
+      image: postgres:15
+      container_name: dedp_postgresql
+      healthcheck:
+        test: ['CMD', 'pg_isready', '--user', 'dedp_test', '-d', 'dedp']
+      environment:
+        - POSTGRES_USER=dedp_test
+        - POSTGRES_PASSWORD=dedp_test
+        - POSTGRES_DB=dedp
+      ports:
+          - "5432:5432"
+      volumes:
+        - ./init.sql:/docker-entrypoint-initdb.d/init.sql
