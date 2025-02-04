@@ -1,0 +1,16 @@
+version: '3'
+services:
+  postgresql:
+      image: postgres:15
+      container_name: dedp_postgresql
+      healthcheck:
+        test: ['CMD', 'pg_isready', '--user', 'dedp_test', '-d', 'dedp']
+      environment:
+        - POSTGRES_USER=dedp_test
+        - POSTGRES_PASSWORD=dedp_test
+        - POSTGRES_DB=dedp
+      ports:
+          - "5432:5432"
+      volumes:
+        - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+        - /tmp/dedp/ch04/proxy/input:/data_to_load

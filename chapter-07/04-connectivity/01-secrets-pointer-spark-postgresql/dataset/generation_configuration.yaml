@@ -1,0 +1,19 @@
+dataset:
+  rows: 20
+data_blocker:
+  type: 'no'
+entity:
+  type: device
+generator:
+  type: one-shot
+writer:
+  type: postgresql
+  configuration:
+    host: 'postgresql'
+    dbname: 'dedp'
+    db_schema: 'dedp'
+    user: 'dedp_test'
+    password: 'dedp_test'
+    table_name: 'devices'
+    table_columns: [ 'type', 'full_name', 'version' ]
+    row_fields_to_insert: [ 'type', 'full_name', 'version' ]
