@@ -1,0 +1,3 @@
+pyspark==3.5.0
+prometheus-client==0.20.0
+confluent-kafka==2.0.2

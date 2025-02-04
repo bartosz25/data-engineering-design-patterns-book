@@ -1,0 +1,39 @@
+version: '3.1'
+services:
+  postgresql:
+      image: postgres:15
+      container_name: dedp_postgresql
+      healthcheck:
+        test: ['CMD', 'pg_isready', '--user', 'dedp_test', '-d', 'dedp']
+      environment:
+        - POSTGRES_USER=dedp_test
+        - POSTGRES_PASSWORD=dedp_test
+        - POSTGRES_DB=dedp
+      ports:
+          - "5432:5432"
+      volumes:
+        - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+        - /tmp/dedp/ch10/01-data-detectors/01-flow-interruption-apache-airflow-postgresql-grafana/input:/data_to_load
+      command:
+          - "postgres"
+          - "-c"
+          - "track_commit_timestamp=on"
+  grafana:
+    image: "grafana/grafana:8.4.5"
+    container_name: dedp_docker_grafana
+    depends_on:
+     - prometheus
+    ports:
+     - "3000:3000"
+    environment:
+      GF_PATHS_DATA : /var/lib/grafana
+      GF_SECURITY_ADMIN_PASSWORD : admin
+    volumes:
+     - ./grafana/provisioning:/etc/grafana/provisioning
+  prometheus:
+    image: "prom/prometheus:v2.34.0"
+    ports:
+     - "9090:9090"
+    volumes:
+     - ./etc/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    command: "--config.file=/etc/prometheus/prometheus.yml"

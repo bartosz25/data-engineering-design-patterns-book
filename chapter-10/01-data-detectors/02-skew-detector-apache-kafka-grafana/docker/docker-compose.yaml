@@ -1,0 +1,77 @@
+version: '3.1'
+services:
+  kafka:
+    image: 'bitnami/kafka:3.5'
+    container_name: kafka
+    ports:
+      - '9092:9092'
+      - '9094:9094'
+      - '9991:9991'
+    environment:
+      # KRaft settings
+      - KAFKA_CFG_NODE_ID=0
+      - KAFKA_CFG_PROCESS_ROLES=controller,broker
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka:9093
+      # Listeners
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093,EXTERNAL://:9094
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092,EXTERNAL://localhost:9094
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+      - KAFKA_DELETE_TOPIC_ENABLE=true
+      - JMX_PORT=9991
+      - KAFKA_JMX_OPTS=-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=kafka -Dcom.sun.management.jmxremote.rmi.port=9991
+    volumes:
+      - ./kafka_healthcheck.sh:/tmp/scripts/kafka_healthcheck.sh
+    healthcheck:
+      #test: ["CMD", "JMX_PORT=", "kafka-topics.sh", "--bootstrap-server=localhost:9092", "--list"]
+      test: ["CMD", "/tmp/scripts/kafka_healthcheck.sh"]
+      start_period: 15s
+      interval: 10s
+  jmx-kafka:
+    image: "sscaling/jmx-prometheus-exporter"
+    ports:
+     - "5556:5556"
+    environment:
+     CONFIG_YML : "/etc/jmx_exporter/config.yml"
+    volumes:
+     - ./etc/jmx_exporter/config_kafka.yml:/etc/jmx_exporter/config.yml
+    depends_on:
+      - kafka
+  init-kafka:
+    image: bitnami/kafka:3.5
+    depends_on:
+      kafka:
+        condition: service_healthy
+    entrypoint: [ '/bin/sh', '-c' ]
+    command: |
+      "
+      unset JMX_PORT
+      # blocks until kafka is reachable
+      kafka-topics.sh --bootstrap-server kafka:9092 --list
+      echo -e 'Creating Kafka topics'
+      kafka-topics.sh --bootstrap-server kafka:9092 --create --if-not-exists --topic visits --replication-factor 1 --partitions 2
+
+      echo -e 'Successfully created the following topics:'
+      kafka-topics.sh --bootstrap-server kafka:9092 --list
+      "
+  grafana:
+    image: "grafana/grafana:8.4.5"
+    container_name: dedp_docker_grafana
+    depends_on:
+     - prometheus
+    ports:
+     - "3000:3000"
+    environment:
+      GF_PATHS_DATA : /var/lib/grafana
+      GF_SECURITY_ADMIN_PASSWORD : admin
+    volumes:
+     - ./grafana/provisioning:/etc/grafana/provisioning
+     - ./grafana/dashboards:/var/lib/grafana/dashboards
+  prometheus:
+    image: "prom/prometheus:v2.34.0"
+    ports:
+     - "9090:9090"
+    volumes:
+     - ./etc/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    command: "--config.file=/etc/prometheus/prometheus.yml"

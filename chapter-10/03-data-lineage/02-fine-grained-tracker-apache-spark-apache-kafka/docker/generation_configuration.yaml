@@ -1,0 +1,25 @@
+dataset:
+  rows: 10
+  composition_percentage:
+    duplicates: 0
+    missing_fields: 0
+    unprocessable_rows: 0
+data_blocker:
+  type: 'sleep'
+  configuration:
+    sleep_time_range_seconds:
+      from: 1
+      to: 7
+entity:
+  type: visit
+  configuration:
+    start_time: '2024-01-01T00:00:00Z'
+generator:
+  type: continuous
+writer:
+  type: kafka
+  configuration:
+    broker: 'kafka:9092'
+    output_topic: 'visits'
+    extra_producer_config:
+      'queue.buffering.max.ms': 2000

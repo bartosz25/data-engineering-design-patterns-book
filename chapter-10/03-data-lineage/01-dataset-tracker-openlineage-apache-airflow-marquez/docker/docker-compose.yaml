@@ -1,0 +1,48 @@
+version: '3.1'
+services:
+  postgresql:
+      image: postgres:15
+      container_name: dedp_postgresql
+      healthcheck:
+        test: ['CMD', 'pg_isready', '--user', 'dedp_test', '-d', 'dedp']
+      environment:
+        - POSTGRES_USER=dedp_test
+        - POSTGRES_PASSWORD=dedp_test
+        - POSTGRES_DB=dedp
+      ports:
+          - "5532:5432"
+      volumes:
+        - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+        - /tmp/dedp/ch10/03-data-lineage/01-dataset-tracker-openlineage-apache-airflow-marquez/input:/data_to_load
+  web:
+    image: marquezproject/marquez-web:0.49.0
+    container_name: marquez-web
+    environment:
+      - MARQUEZ_HOST=marquez_api
+      - MARQUEZ_PORT=5000
+    ports:
+      - 3000:3000
+  marquez_api:
+    image: marquezproject/marquez:0.49.0
+    container_name: marquez-api
+    ports:
+      - "5000:5000"
+      - "5001:5001"
+    links:
+      - "marquez_db:postgres"
+    depends_on:
+      marquez_db:
+        condition: service_healthy
+  marquez_db:
+    image: postgres:15
+    container_name: marquez-db
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "marquez"]
+      interval: 5s
+      retries: 5
+    environment:
+      - POSTGRES_USER=marquez
+      - POSTGRES_PASSWORD=marquez
+      - POSTGRES_DB=marquez

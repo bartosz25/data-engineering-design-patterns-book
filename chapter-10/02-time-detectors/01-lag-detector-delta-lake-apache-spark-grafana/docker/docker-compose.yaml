@@ -1,0 +1,25 @@
+version: '3.1'
+services:
+  grafana:
+    image: "grafana/grafana:8.4.5"
+    container_name: dedp_docker_grafana
+    depends_on:
+     - prometheus
+    ports:
+     - "3000:3000"
+    environment:
+      GF_PATHS_DATA : /var/lib/grafana
+      GF_SECURITY_ADMIN_PASSWORD : admin
+    volumes:
+     - ./grafana/provisioning:/etc/grafana/provisioning
+  prometheus:
+    image: "prom/prometheus:v2.34.0"
+    ports:
+     - "9090:9090"
+    volumes:
+     - ./etc/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    command: "--config.file=/etc/prometheus/prometheus.yml"
+  pushgateway:
+    image: "prom/pushgateway:v1.9.0"
+    ports:
+      - "9091:9091"
