@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package com.waitingforcode;
+
+import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
+
+message Visit {
+  string visit_id = 1 [(buf.validate.field).string.min_len = 5];
+  google.protobuf.Timestamp event_time = 2 [(buf.validate.field).timestamp.lt_now = true,
+    (buf.validate.field).required = true];
+  string user_id = 3 [(buf.validate.field).required = true];
+  string page = 4 [(buf.validate.field).cel = {
+    message: "Page cannot end with an html extension"
+    expression: "this.endsWith('html') == false"
+  }, (buf.validate.field).required = true];
+}

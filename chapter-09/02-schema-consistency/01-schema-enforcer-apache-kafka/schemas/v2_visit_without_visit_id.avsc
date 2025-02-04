@@ -1,0 +1,8 @@
+{
+ "type": "record",
+ "namespace": "com.waitingforcode.model",
+ "name": "Visit",
+ "fields": [
+ 	{"name": "event_time",  "type": "int", "logicalType": "time"}
+ ]
+}

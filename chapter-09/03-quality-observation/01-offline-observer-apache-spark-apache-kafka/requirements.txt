@@ -1,0 +1,6 @@
+pyspark==3.5.0
+pandas==2.0.2
+pyarrow==14.0.1
+confluent-kafka==2.0.2
+elasticsearch==8.6.2
+ydata-profiling[pyspark]==4.9.0

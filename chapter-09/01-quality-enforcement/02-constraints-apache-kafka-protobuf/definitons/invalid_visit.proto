@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+import "definitons/visit.proto";
+
+package com.waitingforcode;
+
+message ValidationError {
+  string field = 1;
+  string message = 2;
+}
+
+message InvalidVisit {
+  Visit visit = 1;
+  repeated ValidationError errors = 2;
+}

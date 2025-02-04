@@ -1,0 +1,25 @@
+dataset:
+  rows: 50
+  composition_percentage:
+    duplicates: 0
+    missing_fields: 0
+    unprocessable_rows: 0
+data_blocker:
+  type: sleep
+  configuration:
+    sleep_time_range_seconds:
+      from: 1
+      to: 2
+entity:
+  type: visit
+  configuration:
+    start_time: '2024-07-24T00:00:00Z'
+generator:
+  type: one-shot
+writer:
+  type: json
+  configuration:
+    output_path: '/home/data_generator_user/data_generator_output/input'
+    clean_path: true
+  partitions: ['date=2024-07-01', 'date=2024-07-02', 'date=2024-07-03', 'date=2024-07-04',
+               'date=2024-07-05', 'date=2024-07-06', 'date=2024-07-07']

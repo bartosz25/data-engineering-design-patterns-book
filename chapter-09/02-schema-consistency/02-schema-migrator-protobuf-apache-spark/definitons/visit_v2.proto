@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package com.waitingforcode;
+
+import "google/protobuf/timestamp.proto";
+
+message UserDetails {
+  string id = 1;
+  string ip = 2;
+  string login = 3;
+  bool is_connected = 4;
+}
+
+message VisitV2 {
+  string visit_id = 1;
+  google.protobuf.Timestamp event_time = 2;
+  string page = 4;
+  string referral = 8;
+  UserDetails user_details = 9;
+}

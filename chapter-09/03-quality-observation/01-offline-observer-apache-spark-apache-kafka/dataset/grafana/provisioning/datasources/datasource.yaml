@@ -1,0 +1,24 @@
+# config file version
+apiVersion: 1
+
+# list of datasources that should be deleted from the database
+deleteDatasources:
+  - name: Prometheus
+    orgId: 1
+
+# list of datasources to insert/update depending
+# what's available in the database
+datasources:
+- name: Elasticsearch - validated_users
+  type: elasticsearch
+  access: server
+  orgId: 1
+  url: http://elasticsearch:9200
+  database: visits_observation_stats
+  jsonData:
+    timeField: '@timestamp'
+  esConfigVersion: '8.0+'
+  isDefault: false
+  version: 1
+  # <bool> allow users to edit datasources from the UI.
+  editable: true

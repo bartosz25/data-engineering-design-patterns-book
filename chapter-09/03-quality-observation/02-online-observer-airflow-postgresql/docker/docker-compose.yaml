@@ -1,0 +1,36 @@
+version: '3.1'
+services:
+  data_generator:
+    image: waitingforcode/data-generator-blogging-platform:0.3-beta
+    depends_on:
+      postgresql:
+        condition: service_healthy
+    volumes:
+      - ./generation_configuration.yaml:/home/data_generator_user/generation_configuration_json.yaml
+    entrypoint:
+      - python3
+      - /home/data_generator_user/data_generator/generate_dataset.py
+      - --config_file
+      - /home/data_generator_user/generation_configuration_json.yaml
+  postgresql:
+      image: postgres:15
+      container_name: dedp_postgresql
+      healthcheck:
+        test: ['CMD', 'pg_isready', '--user', 'dedp_test', '-d', 'dedp']
+      environment:
+        - POSTGRES_USER=dedp_test
+        - POSTGRES_PASSWORD=dedp_test
+        - POSTGRES_DB=dedp
+      ports:
+          - "5432:5432"
+      volumes:
+        - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+        - /tmp/dedp/ch05/04-sessionization/01-incremental-airflow-windows-postgresql/input:/data_to_load
+  grafana:
+    image: "grafana/grafana:8.4.5"
+    container_name: dedp_docker_grafana
+    ports:
+     - "3000:3000"
+    environment:
+      GF_PATHS_DATA : /var/lib/grafana
+      GF_SECURITY_ADMIN_PASSWORD : admin
