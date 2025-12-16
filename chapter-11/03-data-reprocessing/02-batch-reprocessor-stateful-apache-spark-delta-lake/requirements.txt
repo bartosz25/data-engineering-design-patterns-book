@@ -1,0 +1,2 @@
+pyspark==4.0.0
+delta-spark==4.0.0

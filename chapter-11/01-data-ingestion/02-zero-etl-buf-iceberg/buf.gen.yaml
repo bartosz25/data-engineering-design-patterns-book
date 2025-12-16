@@ -1,0 +1,20 @@
+# buf.gen.yaml files define how to generate stubs using the buf generate command.
+#
+# See https://buf.build/docs/generate/tutorial for more details.
+version: v2
+managed:
+  enabled: true
+  override:
+    - file_option: go_package_prefix
+      value: github.com/bufbuild/buf-examples/bufstream/iceberg-quickstart
+    - file_option: go_package_prefix
+      module: buf.build/bufbuild/confluent
+      value: buf.build/gen/go/bufbuild/confluent/protocolbuffers/go
+  disable:
+    - file_option: go_package
+      module: buf.build/bufbuild/protovalidate
+plugins:
+  - remote: buf.build/protocolbuffers/go:v1.36.6
+    out: gen
+    opt: paths=source_relative
+clean: true

@@ -1,0 +1,43 @@
+# yaml-language-server: $schema=schema/buf.bufstream.config.v1alpha1.BufstreamConfig.schema.json
+cluster: demo
+zone: localhost
+kafka:
+  address:
+    host: 0.0.0.0
+    port: 9092
+  public_address:
+    host: 0.0.0.0
+    port: 9092
+observability:
+  log_level: INFO
+  log_format: TEXT
+  debug_address:
+    host: 0.0.0.0
+data_enforcement:
+  schema_registries:
+    - name: csr
+      confluent:
+        url: "https://demo.buf.dev/integrations/confluent/bufstream-demo"
+        instance_name: "bufstream-demo"
+  produce:
+    - topics: { all: true }
+      schema_registry: csr
+      values:
+        on_parse_error: REJECT_BATCH
+        validation:
+          on_error: REJECT_BATCH
+
+storage:
+  provider: S3
+  region: us-east-1
+  bucket: warehouse
+  endpoint: http://minio:9000
+  access_key_id:
+    string: admin
+  secret_access_key:
+    string: password
+iceberg:
+  catalogs:
+    - name: local-rest-catalog
+      rest:
+        url: http://iceberg-rest:8181

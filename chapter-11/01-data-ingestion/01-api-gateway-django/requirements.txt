@@ -1,0 +1,5 @@
+flask==2.2.2
+Werkzeug==2.3.7
+#flask-cors==1.10.3
+confluent-kafka==2.0.2
+pyspark==4.0.0

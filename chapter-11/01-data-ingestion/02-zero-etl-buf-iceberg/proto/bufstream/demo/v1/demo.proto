@@ -1,0 +1,87 @@
+// Copyright 2020-2025 Buf Technologies, Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+// Implements types for the Bufstream demo.
+package bufstream.demo.v1;
+
+// We import extensions.proto to use a custom option that allows us to associate
+// a message with a specific subject.
+//
+// See the [buf.build/bufbuild/confluent](https://buf.build/bufbuild/confluent) module
+// for the full documentation.
+import "buf/confluent/v1/extensions.proto";
+// This imports protovalidate custom options.
+//
+// See [github.com/bufbuild/protovaliate](https://github.com/bufbuild/protovalidate)
+// for more details.
+import "buf/validate/validate.proto";
+
+// An event where an email address was updated for a given user.
+//
+// This represents the schema of data sent to the `email-updated-value` subject.
+message EmailUpdated {
+  // We define the association between the EmailUpdated message and the `email-updated-value`
+  // subject using the
+  // [`buf.confluent.v1.subject`](https://buf.build/bufbuild/confluent/docs/main:buf.confluent.v1#buf.confluent.v1.Subject)
+  // custom option.
+  option (buf.confluent.v1.subject) = {
+    // The user-specified name for the Confluent Schema Registry instance within the BSR.
+    //
+    // Instances are managed within BSR admin settings.
+    instance_name: "bufstream-demo"
+    // The subject's name as determined by the subject naming strategy.
+    //
+    // See
+    // [Confuent's documentation](https://docs.confluent.io/platform/current/schema-registry/fundamentals/serdes-develop/index.html#subject-name-strategy)
+    // for more details.
+
+    // The default subject name strategy is TopicNameStrategy, which appends either `-key` or
+    // `-value` to a Kafka topic's name to create the subject name.
+    name: "email-updated-value"
+  };
+
+  // The ID of the user associated with this email address update.
+  string id = 1 [
+    // This must be a UUID as defined by RFC 4122.
+    //
+    // You can validate that this field is an ID using the
+    // [protovalidate](https://github.com/bufbuild/protovalidate) framework.
+    //
+    // See [StringRules](https://buf.build/bufbuild/protovalidate/docs/main:buf.validate#buf.validate.StringRules)
+    // for all possible builtin string validations.
+    (buf.validate.field).string.uuid = true
+  ];
+  // The old email address.
+  string old_email_address = 2 [
+    // This must be a valid email address.
+    (buf.validate.field).string.email = true,
+    // This option says that empty values of this field are allowed, and to
+    // only enforce the email validation if this field is non-empty.
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    // When data quality enforcement is enabled, debug_redact fields can be optionally redacted
+    // on a per-topic basis when records are read by producers.
+    //
+    // This is generally used for sensitive fields.
+    debug_redact = true
+  ];
+  // The new email address.
+  string new_email_address = 3 [
+    // This field is required. It will never be empty.
+    (buf.validate.field).required = true,
+    // This must be a valid email address.
+    (buf.validate.field).string.email = true
+  ];
+}

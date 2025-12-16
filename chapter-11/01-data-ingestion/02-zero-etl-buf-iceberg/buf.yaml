@@ -1,0 +1,14 @@
+# buf.yaml files define how to build the .proto files within your local directory
+#
+# See https://buf.build/docs/tutorials/getting-started-with-buf-cli for more details.
+version: v2
+modules:
+  # Our .proto files live within the proto directory.
+  - path: proto
+deps:
+  # We import "buf/confluent/v1/extensions.proto" within our example files, which
+  # comes from the buf.build/bufbuild/confluent module.
+  - buf.build/bufbuild/confluent:v0.1.0
+  # We import "buf/validate/validate.proto" within our example files, which
+  # comes from the buf.build/bufbuild/protovalidate module.
+  - buf.build/bufbuild/protovalidate:v0.12.0

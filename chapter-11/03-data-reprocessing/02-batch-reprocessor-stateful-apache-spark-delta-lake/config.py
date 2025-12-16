@@ -1,0 +1,6 @@
+BASE_DIR = '/tmp/dedp/ch11/03-data-reprocessing/02-batch-reprocessor-stateful-apache-spark-delta-lake'
+INPUT_TOPIC_NAME = 'visits'
+OUTPUT_TOPIC_NAME = 'visits_counter'
+DATA_DIR = f'{BASE_DIR}/visits_table'
+CHECKPOINT_DIR_SYNCHRONIZER = f'{BASE_DIR}/checkpoint-synchronizer'
+CHECKPOINT_DIR_STREAMING_JOB = f'{BASE_DIR}/checkpoint-streaming-job'

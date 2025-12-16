@@ -1,0 +1,34 @@
+reference_datasets:
+  - reference_key: 'devices_provider'
+    dataset:
+      rows: 5
+    entity:
+      type: device
+    writer:
+      type: json
+      configuration:
+        output_path: '/home/data_generator_user/data_generator_output/input'
+        clean_path: true
+dataset:
+  rows: 5
+data_blocker:
+  type: sleep
+  configuration:
+    sleep_time_range_seconds:
+      from: 1
+      to: 6
+entity:
+  type: visit
+  configuration:
+    start_time: '2023-11-24T00:00:00Z'
+  reference_datasets:
+    devices: 'devices_provider'
+generator:
+  type: continuous
+writer:
+  type: kafka
+  configuration:
+    broker: 'kafka:9092'
+    output_topic: 'visits'
+    extra_producer_config:
+      'queue.buffering.max.ms': 2000
