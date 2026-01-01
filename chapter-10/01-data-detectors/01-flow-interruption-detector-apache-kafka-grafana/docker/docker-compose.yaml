@@ -1,7 +1,7 @@
 version: '3.1'
 services:
   kafka:
-    image: 'bitnami/kafka:3.5'
+    image: 'bitnamilegacy/kafka:3.5'
     container_name: kafka
     ports:
       - '9092:9092'
@@ -38,7 +38,7 @@ services:
     depends_on:
       - kafka
   init-kafka:
-    image: bitnami/kafka:3.5
+    image: bitnamilegacy/kafka:3.5
     depends_on:
       kafka:
         condition: service_healthy

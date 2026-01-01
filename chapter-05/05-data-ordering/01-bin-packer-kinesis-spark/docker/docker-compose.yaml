@@ -13,7 +13,7 @@ services:
       - --config_file
       - /home/data_generator_user/generation_configuration.yaml
   kafka:
-    image: 'bitnami/kafka:3.5'
+    image: 'bitnamilegacy/kafka:3.5'
     container_name: dedp_ch05_bin_packer_kafka
     ports:
       - '9092:9092'
@@ -35,7 +35,7 @@ services:
       start_period: 15s
       interval: 10s
   init-kafka:
-    image: bitnami/kafka:3.5
+    image: bitnamilegacy/kafka:3.5
     depends_on:
       kafka:
         condition: service_healthy

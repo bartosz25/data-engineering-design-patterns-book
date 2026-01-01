@@ -1,7 +1,7 @@
 version: '3.1'
 services:
   kafka:
-    image: 'bitnami/kafka:3.5'
+    image: 'bitnamilegacy/kafka:3.5'
     container_name: ch05_01_data_enrichment_02_dynamic_joiner_flink
     ports:
       - '9092:9092'
@@ -23,7 +23,7 @@ services:
       start_period: 15s
       interval: 10s
   init-kafka:
-    image: bitnami/kafka:3.5
+    image: bitnamilegacy/kafka:3.5
     depends_on:
       kafka:
         condition: service_healthy
