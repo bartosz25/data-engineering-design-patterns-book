@@ -1,7 +1,7 @@
 version: '3'
 services:
   kafka:
-    image: 'bitnami/kafka:3.5'
+    image: 'bitnamilegacy/kafka:3.5'
     container_name: compaction_kafka
     ports:
       - '9092:9092'
