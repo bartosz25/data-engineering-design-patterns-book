@@ -1,0 +1,4 @@
+pyspark==4.0.0
+delta-spark==4.0.0
+pandas==3.0.0
+pyarrow==23.0.0

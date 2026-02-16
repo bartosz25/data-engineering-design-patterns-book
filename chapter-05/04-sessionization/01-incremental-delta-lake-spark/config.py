@@ -1,0 +1,5 @@
+BASE_DIR = '/tmp/dedp/ch05/04-sessionization/01-incremental-delta-lake-spark'
+DATA_DIR = f'{BASE_DIR}/visits_table'
+SESSIONS_DIR = f'{BASE_DIR}/sessions'
+PENDING_SESSIONS_DIR = f'{BASE_DIR}/pending_sessions'
+CHECKPOINT_DIR_STREAMING_JOB = f'{BASE_DIR}/checkpoint-sessionizer'
