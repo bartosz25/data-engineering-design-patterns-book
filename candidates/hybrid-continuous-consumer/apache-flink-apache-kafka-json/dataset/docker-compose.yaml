@@ -1,0 +1,59 @@
+version: '3.1'
+services:
+  data_generator:
+    image: waitingforcode/data-generator-blogging-platform:v0.0.4-beta.1
+    depends_on:
+      init-kafka:
+        condition: service_completed_successfully
+    volumes:
+      - ./generation_configuration.yaml:/home/data_generator_user/generation_configuration.yaml
+    entrypoint:
+      - python3
+      - /home/data_generator_user/data_generator/generate_dataset.py
+      - --config_file
+      - /home/data_generator_user/generation_configuration.yaml
+  kafka:
+    image: apache/kafka:4.1.1
+    container_name: kafka
+    ports:
+      - "9092:9092"
+      - "9094:9094"
+    environment:
+      # KRaft settings
+      KAFKA_NODE_ID: 0
+      KAFKA_PROCESS_ROLES: controller,broker
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 0@kafka:9093
+      # Listeners
+      KAFKA_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093,EXTERNAL://:9094
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,EXTERNAL://localhost:9094
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_DELETE_TOPIC_ENABLE: true
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    healthcheck:
+      test: ["CMD", "/opt/kafka/bin/kafka-topics.sh", "--bootstrap-server=localhost:9092", "--list"]
+      start_period: 15s
+      interval: 10s
+  init-kafka:
+    image: apache/kafka:4.1.1
+    depends_on:
+      kafka:
+        condition: service_healthy
+    entrypoint: [ '/bin/sh', '-c' ]
+    command: |
+      "
+      echo 'Waiting for Kafka to be ready...'
+      # This loop checks if the broker is accepting connections on port 9092
+      until /opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server kafka:9092 > /dev/null 2>&1; do
+        echo 'Kafka is not ready yet... waiting 2 seconds'
+        sleep 2
+      done
+      # blocks until kafka is reachable
+      /opt/kafka/bin/kafka-topics.sh --bootstrap-server kafka:9092 --list
+      echo -e 'Creating Kafka topics'
+      /opt/kafka/bin/kafka-topics.sh --bootstrap-server kafka:9092 --create --if-not-exists --topic visits --replication-factor 1 --partitions 3
+
+      echo -e 'Successfully created the following topics:'
+      /opt/kafka/bin/kafka-topics.sh --bootstrap-server kafka:9092 --list
+      "
