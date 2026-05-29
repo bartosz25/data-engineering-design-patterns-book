@@ -1,0 +1,2 @@
+# Data Engineering Design Patterns candidates
+In this folder you can find design pattern candidates. A candidate doesn't take part of the book because if was defined after the first release. Those patterns are described on my blog: [data engineering design patterns](https://www.waitingforcode.com/tags/data-engineering-design-patterns)
